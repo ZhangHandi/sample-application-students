@@ -18,3 +18,24 @@ script:
 cache:
   directories:
   - "$HOME/.m2/repository"
+
+# Environment variables are strings (double quotes)
+# Example:
+# - secure: "DpR1th9rZvLMX0......"
+env:
+  global:
+    - secure: <ENCRYPTED_TOKEN>
+
+# The pipe (|) is useful to create multiline scripts
+script:
+  - |
+    mvn clean install sonar:sonar \
+    -Dsonar.projectKey=<SONAR_PROJECT_KEY> \
+    -Dsonar.organization=<SONAR_ORGANISATION_KEY> \
+    -Dsonar.host.url=https://sonarcloud.io \
+    -Dsonar.login=$SONAR_TOKEN
+
+# Send an email to the commiter if the pipeline failed at some point
+notifications:
+  email:
+    on_failure: always
